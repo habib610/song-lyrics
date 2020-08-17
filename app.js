@@ -6,6 +6,7 @@ const lyricsLine = document.getElementById('lyricsLine');
 
 
 const apiUrl = `https://api.lyrics.ovh`;
+// search button event handler added
 searchBtn.addEventListener('click', ()=>{
     const searchText = searchArea.value;
     if(searchText ==''){
@@ -16,15 +17,15 @@ searchBtn.addEventListener('click', ()=>{
         searchArea.value =''
     }
 })
-// calling api 
+
+// calling first api 
 getSongTittle=text=>{
     fetch(`${apiUrl}/suggest/${text}`)
     .then(response => response.json())
     .then(data => showData(data))
 }
 
-
-// get tittle 
+// getting tittle 
 showData=data=>{
     let output = '';
     const secondData = data.data;
@@ -34,16 +35,16 @@ showData=data=>{
         artistName(song);
     }
     
-    // showing output 
+    // displaying song tittle and author name 
    function artistName(song){
-        output+= ` <p class="author lead d-flex"> <strong>${song.title} </strong>&nbsp; Album by &nbsp;<span> ${song.artist.name}</span> <button class="btn btn-success ml-auto" data-artist ="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button></p>`;
+        output+= ` <p class="author lead d-flex"><strong>${song.title} </strong>&nbsp; Album by &nbsp;<span> ${song.artist.name}</span> <button class="btn btn-success ml-auto" data-artist ="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button></p>`;
     }
-    result.innerHTML = `<ul> ${output} </ul>`
+    result.innerHTML = ` ${output}`;
 }
 
 
 
-// adding event handler to song get lyrics Button
+// getting artist name and tittle 
 result.addEventListener('click', function(e){
     const lyricsBtn = e.target;
     if(lyricsBtn.tagName ==='BUTTON'){
@@ -52,7 +53,7 @@ result.addEventListener('click', function(e){
         getLyrics(artist, songTitle);
     }
 })
-// second api call for lyrics
+// second api call
   getLyrics=(artist, songTitle)=>{
     fetch(`${apiUrl}/v1/${artist}/${songTitle}`)
     .then(response =>  response.json())
